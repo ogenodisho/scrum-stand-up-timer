@@ -1,4 +1,4 @@
-import React from 'react';
+var React = require('react');
 
 class AwesomeComponent extends React.Component {
 

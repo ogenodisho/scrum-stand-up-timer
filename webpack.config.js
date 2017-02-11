@@ -1,19 +1,28 @@
 var webpack = require('webpack');
 var path = require('path');
 
-var BUILD_DIR = path.resolve(__dirname, 'src/client/public');
-var APP_DIR = path.resolve(__dirname, 'src/client/app');
+var INDEX_DIR = path.resolve(__dirname, 'index');
+var BUILD_DIR = path.resolve(__dirname, 'webpack');
+var REACT_DIR = path.resolve(__dirname, 'react');
 
 var config = {
-    entry: APP_DIR + '/index.jsx',
+    entry: {
+        app: INDEX_DIR + '/app.jsx',
+        routes: INDEX_DIR + '/routes.jsx',
+        StandupTimerApp: INDEX_DIR + '/StandupTimerApp.jsx',
+        AwesomeComponent: REACT_DIR + '/components/' + 'AwesomeComponent.jsx',
+        HelloWorld: REACT_DIR + '/components/' + 'HelloWorld.jsx',
+        NotFound: REACT_DIR + '/components/' + 'NotFound.jsx'
+    },
     output: {
         path: BUILD_DIR,
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     module: {
         loaders: [{
             test: /\.jsx?/,
-            include: APP_DIR,
+            include: [INDEX_DIR, REACT_DIR],
+            exclude: /node_modules/,
             loader: 'babel-loader'
         }]
     }

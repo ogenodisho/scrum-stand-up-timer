@@ -1,0 +1,22 @@
+{
+    "name": "scrum-stand-up-timer",
+    "version": "1.0.0",
+    "description": "An application to timebox scrum standup meetings. Built in React.js!",
+    "main": "src/client/app/index.jsx",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "webpack -d --watch",
+        "build": "webpack -p"
+    },
+    "author": "Ogen Odisho",
+    "license": "ISC",
+    "dependencies": {
+        "babel-core": "^6.22.1",
+        "babel-loader": "^6.2.10",
+        "babel-preset-es2015": "^6.22.0",
+        "babel-preset-react": "^6.22.0",
+        "react": "^15.4.2",
+        "react-dom": "^15.4.2",
+        "webpack": "^2.2.1"
+    }
+}

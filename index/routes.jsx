@@ -1,16 +1,15 @@
 var React = require('react');
-import {Route, IndexRoute} from 'react-router';
-import StandupTimerApp from './StandupTimerApp.jsx';
+import {Route} from 'react-router';
 import HelloWorld from '../react/components/HelloWorld.jsx';
 import AwesomeComponent from '../react/components/AwesomeComponent.jsx';
 import NotFound from '../react/components/NotFound.jsx';
 
 const routes = props => {
-    return (<Route name="StandupTimerApp" path='/' handler={StandupTimerApp}>
-      <IndexRoute handler={HelloWorld} />
-      <Route name='awesome' handler={AwesomeComponent} />
-      <Route path='*' handler={NotFound} />
-    </Route>);
+  return (<Route path='/' component={HelloWorld}>
+            <Route name='awesome' component={AwesomeComponent} />
+            <Route path='*' component={NotFound} />
+          </Route>
+        );
 }
 
 export default routes;

@@ -9,7 +9,6 @@ var config = {
     entry: {
         app: INDEX_DIR + '/app.jsx',
         routes: INDEX_DIR + '/routes.jsx',
-        StandupTimerApp: INDEX_DIR + '/StandupTimerApp.jsx',
         AwesomeComponent: REACT_DIR + '/components/' + 'AwesomeComponent.jsx',
         HelloWorld: REACT_DIR + '/components/' + 'HelloWorld.jsx',
         NotFound: REACT_DIR + '/components/' + 'NotFound.jsx'

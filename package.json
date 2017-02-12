@@ -2,7 +2,7 @@
     "name": "scrum-stand-up-timer",
     "version": "1.0.0",
     "description": "An application to timebox scrum standup meetings. Built in React.js!",
-    "main": "index/app.js",
+    "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "webpack -d",

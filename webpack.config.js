@@ -10,7 +10,7 @@ var config = {
         app: INDEX_DIR + '/app.jsx',
         routes: INDEX_DIR + '/routes.jsx',
         AwesomeComponent: REACT_DIR + '/components/' + 'AwesomeComponent.jsx',
-        HelloWorld: REACT_DIR + '/components/' + 'HelloWorld.jsx',
+        Root: REACT_DIR + '/components/' + 'Root.jsx',
         NotFound: REACT_DIR + '/components/' + 'NotFound.jsx'
     },
     output: {

@@ -7,15 +7,13 @@ var REACT_DIR = path.resolve(__dirname, 'react');
 
 var config = {
     entry: {
-        app: INDEX_DIR + '/app.jsx',
-        routes: INDEX_DIR + '/routes.jsx',
-        AwesomeComponent: REACT_DIR + '/components/' + 'AwesomeComponent.jsx',
-        Root: REACT_DIR + '/components/' + 'Root.jsx',
-        NotFound: REACT_DIR + '/components/' + 'NotFound.jsx'
+        "app.js": INDEX_DIR + '/app.jsx',
+        "routes.js": INDEX_DIR + '/routes.jsx',
+        "StandUpTimerStyle.css": INDEX_DIR + '/styles/StandUpTimerStyle.css'
     },
     output: {
         path: BUILD_DIR,
-        filename: '[name].js'
+        filename: "[name]"
     },
     module: {
         loaders: [{
@@ -23,6 +21,9 @@ var config = {
             include: [INDEX_DIR, REACT_DIR],
             exclude: /node_modules/,
             loader: 'babel-loader'
+        }, {
+            test: /\.css$/,
+            loader: "css-loader"
         }]
     }
 };

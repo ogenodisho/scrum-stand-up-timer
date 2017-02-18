@@ -9,7 +9,7 @@ var config = {
     entry: {
         "app.js": INDEX_DIR + '/app.jsx',
         "routes.js": INDEX_DIR + '/routes.jsx',
-        "StandUpTimerStyle.css": INDEX_DIR + '/styles/StandUpTimerStyle.css'
+        "StandUpTimerStyle.css": INDEX_DIR + '/StandUpTimerStyle.css'
     },
     output: {
         path: BUILD_DIR,
@@ -17,13 +17,13 @@ var config = {
     },
     module: {
         loaders: [{
-            test: /\.jsx?/,
+            test: /\.jsx?$/,
             include: [INDEX_DIR, REACT_DIR],
             exclude: /node_modules/,
             loader: 'babel-loader'
         }, {
             test: /\.css$/,
-            loader: "css-loader"
+            loader: "style-loader!css-loader"
         }]
     }
 };

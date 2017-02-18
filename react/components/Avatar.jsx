@@ -10,7 +10,7 @@ class Avatar extends React.Component {
   }
 
   componentWillReceiveProps() {
-    for (var i=0; i < this.props.teamMembers.length; i++) {
+    for (var i = 0; i < this.props.teamMembers.length; i++) {
       if (this.props.teamMembers[i].awaitingTurn) {
         this.setState({name: this.props.teamMembers[i].name, imageUrl: this.props.teamMembers[i].imageUrl})
         return;

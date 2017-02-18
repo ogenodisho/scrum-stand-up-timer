@@ -20,7 +20,7 @@ class Timer extends React.Component {
   }
 
   componentWillReceiveProps() {
-    for (var i=0; i < this.props.teamMembers.length; i++) {
+    for (var i = 0; i < this.props.teamMembers.length; i++) {
       if (this.props.teamMembers[i].awaitingTurn) {
         clearInterval(this.state.intervalId) // clear old timer because a new one will start
         this.setState({
@@ -37,8 +37,8 @@ class Timer extends React.Component {
   }
 
   tick() {
-    var minutesLeft=parseInt(this.state.minutesLeft)
-    var secondsLeft=parseInt(this.state.secondsLeft)
+    var minutesLeft = parseInt(this.state.minutesLeft)
+    var secondsLeft = parseInt(this.state.secondsLeft)
 
     if (minutesLeft === 0 && secondsLeft === 0) {
       this.finishTurn();
@@ -47,13 +47,13 @@ class Timer extends React.Component {
 
     if (secondsLeft === 0) {
       minutesLeft -= 1
-      secondsLeft=59
+      secondsLeft = 59
     } else {
       secondsLeft -= 1
     }
 
-    minutesLeft=padZeros(minutesLeft + "")
-    secondsLeft=padZeros(secondsLeft + "")
+    minutesLeft = padZeros(minutesLeft + "")
+    secondsLeft = padZeros(secondsLeft + "")
 
     this.setState({
       minutesLeft: minutesLeft,
@@ -79,7 +79,7 @@ class Timer extends React.Component {
   }
 
   handleChange(event) {
-    event.target.value=padZeros(event.target.value)
+    event.target.value = padZeros(event.target.value)
     if (event.target.className === "minutes") {
       this.setState({
         minutesLeft: event.target.value

@@ -1,23 +1,23 @@
-var React=require('react');
+var React = require('react');
 import Avatar from './Avatar.jsx';
 import Timer from './Timer.jsx';
 import TeamMemberListing from './TeamMemberListing.jsx';
 
 // -> Fisher–Yates shuffle algorithm
 function shuffleArray(array) {
-  var m=array.length,
+  var m = array.length,
   t,
   i;
 
   // While there remain elements to shuffle
   while (m) {
     // Pick a remaining element…
-    i=Math.floor(Math.random() * m--);
+    i = Math.floor(Math.random() * m--);
 
     // And swap it with the current element.
-    t=array[m];
-    array[m]=array[i];
-    array[i]=t;
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
   }
 
   return array;
@@ -83,7 +83,7 @@ class ScrumStandUpTimer extends React.Component {
   }
 
   teamMemberChecked(newTeamMember) {
-    var stateCopy=Object.assign({}, this.state);
+    var stateCopy = Object.assign({}, this.state);
     for (var i = 0; i < this.state.teamMembers.length; i++) {
       if (newTeamMember.name === this.state.teamMembers[i].name) {
         stateCopy.teamMembers[i].awaitingTurn = newTeamMember.awaitingTurn;

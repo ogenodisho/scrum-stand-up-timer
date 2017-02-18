@@ -3,10 +3,10 @@ var React = require('react');
 class TimeInput extends React.Component {
   constructor(props) {
     super(props)
-    this.focusSeconds=this.focusSeconds.bind(this);
-    this.blurSeconds=this.blurSeconds.bind(this);
-    this.focusMinutes=this.focusMinutes.bind(this);
-    this.blurMinutes=this.blurMinutes.bind(this);
+    this.focusSeconds = this.focusSeconds.bind(this);
+    this.blurSeconds = this.blurSeconds.bind(this);
+    this.focusMinutes = this.focusMinutes.bind(this);
+    this.blurMinutes = this.blurMinutes.bind(this);
   }
   handleKeyPress(e) {
     e.preventDefault();
@@ -37,7 +37,7 @@ class TimeInput extends React.Component {
           onMouseLeave={this.blurMinutes}
           ref={
             (input) => {
-              this.minutesInput=input;
+              this.minutesInput = input;
             }
           }
         />
@@ -50,7 +50,7 @@ class TimeInput extends React.Component {
           onMouseLeave={this.blurSeconds}
           ref={
             (input) => {
-              this.secondsInput=input;
+              this.secondsInput = input;
             }
           }
         />

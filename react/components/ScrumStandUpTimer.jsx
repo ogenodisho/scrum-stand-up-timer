@@ -106,10 +106,6 @@ class ScrumStandUpTimer extends React.Component {
       }
     }
 
-    if (this.state.currentTeamMemberIndex === newTeamMember.index) {
-      console.log();
-    }
-    console.log(stateCopy.currentTeamMemberIndex);
     this.setState(stateCopy);
   }
 

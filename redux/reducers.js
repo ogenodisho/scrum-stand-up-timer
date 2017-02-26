@@ -1,13 +1,14 @@
 import {
     START_TIMER,
     PAUSE_TIMER,
-    SKIP,
+    FINISH_TURN,
     CHECK_TEAM_MEMBER,
     UNCHECK_TEAM_MEMBER,
-    ADD_MINUTES
+    ADD_MINUTES,
     MINUS_MINUTES,
     ADD_SECONDS,
-    MINUS_SECONDS
+    MINUS_SECONDS,
+    TICK
 } from './actions'
 
 const initialState = {
@@ -115,8 +116,8 @@ function standupTimer(state = initialState, action) {
                 durationSeconds: state.durationSeconds - 1
             })
         case TICK:
-            return Object.assign({}, state {
-                secondsLeft: state.secondsLeft - 1;
+            return Object.assign({}, state, {
+                secondsLeft: state.secondsLeft - 1
             })
         default:
             return state

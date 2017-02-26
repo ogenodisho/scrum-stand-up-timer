@@ -41,7 +41,7 @@ class TimeInput extends React.Component {
             }
           }
         />
-        <span>: </span>
+        <span>:</span>
         <input className="seconds" type="number" min="0" max="59"
           value={this.props.secondsLeft}
           onChange={this.props.onChange}

@@ -26,6 +26,9 @@ function shuffleArray(array) {
 class ScrumStandUpTimer extends React.Component {
   componentWillMount() {
     shuffleArray(this.state.teamMembers);
+    for (var i = 0; i < this.state.teamMembers.length; i++) {
+      this.state.teamMembers[i].index = i;
+    }
   }
 
   constructor() {
@@ -79,16 +82,34 @@ class ScrumStandUpTimer extends React.Component {
   handleTimerFinished(teamMemberIndex) {
     var stateCopy = Object.assign({}, this.state);
     stateCopy.teamMembers[teamMemberIndex].awaitingTurn = false;
+    for (var i = teamMemberIndex + 1; i < stateCopy.teamMembers.length; i++) {
+      if (stateCopy.teamMembers[i].awaitingTurn) {
+        stateCopy.currentTeamMemberIndex = stateCopy.teamMembers[i].index;
+        break;
+      }
+    }
     this.setState(stateCopy);
   }
 
-  teamMemberChecked(newTeamMember) {
+  teamMemberChecked(newTeamMember, status) {
     var stateCopy = Object.assign({}, this.state);
     for (var i = 0; i < this.state.teamMembers.length; i++) {
       if (newTeamMember.name === this.state.teamMembers[i].name) {
         stateCopy.teamMembers[i].awaitingTurn = newTeamMember.awaitingTurn;
+        for (var j = 0; j < stateCopy.teamMembers.length; j++) {
+          if (stateCopy.teamMembers[j].awaitingTurn) {
+              stateCopy.currentTeamMemberIndex = j;
+              break;
+          }
+        }
+        break;
       }
     }
+
+    if (this.state.currentTeamMemberIndex === newTeamMember.index) {
+      console.log();
+    }
+    console.log(stateCopy.currentTeamMemberIndex);
     this.setState(stateCopy);
   }
 
@@ -96,7 +117,7 @@ class ScrumStandUpTimer extends React.Component {
     const _this = this;
     return (
       <div>
-        <Avatar teamMembers={this.state.teamMembers}/>
+        <Avatar teamMembers={this.state.teamMembers} currentTeamMemberIndex={this.state.currentTeamMemberIndex}/>
         <Timer
           teamMembers={this.state.teamMembers}
           onSet={this.handleTimerSet.bind(this)}

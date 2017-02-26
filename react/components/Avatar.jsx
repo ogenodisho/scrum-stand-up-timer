@@ -11,10 +11,10 @@ class Avatar extends React.Component {
 
   componentWillReceiveProps() {
     for (var i = 0; i < this.props.teamMembers.length; i++) {
-      if (this.props.teamMembers[i].awaitingTurn) {
-        this.setState({name: this.props.teamMembers[i].name, imageUrl: this.props.teamMembers[i].imageUrl})
-        return;
-      }
+     if (this.props.teamMembers[i].awaitingTurn) {
+       this.setState({name: this.props.teamMembers[i].name, imageUrl: this.props.teamMembers[i].imageUrl})
+       return;
+     }
     }
     this.setState({name: "Scrum Standup Timer", imageUrl: "https://lh3.googleusercontent.com/-v2Z4lxXe6LY/AAAAAAAAAAI/AAAAAAAAAAA/uVDfAq0u28s/photo.jpg"})
   }

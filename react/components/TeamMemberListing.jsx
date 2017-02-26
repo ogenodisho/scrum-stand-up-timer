@@ -7,7 +7,7 @@ class TeamMemberListing extends React.Component {
 
   onChange(event) {
     this.props.teamMember.awaitingTurn = !this.props.teamMember.awaitingTurn
-    this.props.teamMemberChanged(this.props.teamMember)
+    this.props.teamMemberChanged(this.props.teamMember, this.props.teamMember.awaitingTurn)
   };
 
   render() {

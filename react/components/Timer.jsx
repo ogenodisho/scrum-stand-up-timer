@@ -12,7 +12,7 @@ function padZeros(value) {
 class Timer extends React.Component {
   constructor(props) {
     super(props)
-    this.state={
+    this.state = {
       teamMemberIndex: -1,
       minutesLeft: props.minutesLeft,
       secondsLeft: props.secondsLeft
@@ -66,6 +66,9 @@ class Timer extends React.Component {
   }
 
   finishTurn() {
+    if (this.state.teamMemberIndex < 0) {
+      return;
+    }
     clearInterval(this.state.intervalId)
     this.props.onFinished(this.state.teamMemberIndex)
     this.setState({

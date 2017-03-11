@@ -30,14 +30,14 @@ export function finishTurn() {
 export function checkTeamMember(name) {
     return {
         type: CHECK_TEAM_MEMBER,
-        name
+        name: name
     }
 }
 
 export function uncheckTeamMember(name) {
     return {
         type: UNCHECK_TEAM_MEMBER,
-        name
+        name: name
     }
 }
 

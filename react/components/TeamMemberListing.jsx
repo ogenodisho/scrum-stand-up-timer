@@ -3,6 +3,7 @@ var React = require('react');
 class TeamMemberListing extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this)
   }
 
   onChange(event) {

@@ -2,6 +2,11 @@ var React = require('react');
 import Avatar from './Avatar.jsx';
 import Timer from './Timer.jsx';
 import TeamMemberListing from './TeamMemberListing.jsx';
+import {Provider} from 'react-redux'
+import {createStore} from 'redux';
+import standupTimer from '../../redux/reducers.js';
+
+const store = createStore(standupTimer);
 
 // -> Fisher–Yates shuffle algorithm
 function shuffleArray(array) {
@@ -112,28 +117,37 @@ class ScrumStandUpTimer extends React.Component {
   render() {
     const _this = this;
     return (
-      <div>
-        <Avatar teamMembers={this.state.teamMembers} currentTeamMemberIndex={this.state.currentTeamMemberIndex}/>
-        <Timer
-          teamMembers={this.state.teamMembers}
-          onSet={this.handleTimerSet.bind(this)}
-          onFinished={this.handleTimerFinished.bind(this)}
-          minutesLeft={this.state.minuteDuration}
-          secondsLeft={this.state.secondDuration}
-        />
-        <div className="teamMemberListingContainer">
-          {
-            this.state.teamMembers.map(function(teamMember) {
-              return <TeamMemberListing
-                        key={teamMember.name}
-                        teamMember={teamMember}
-                        teamMemberChanged={_this.teamMemberChecked.bind(_this)}/>
-            })
-          }
+      <Provider store={store}>
+        <div>
+          <Avatar teamMembers={this.state.teamMembers} currentTeamMemberIndex={this.state.currentTeamMemberIndex}/>
+          <Timer
+            teamMembers={this.state.teamMembers}
+            onSet={this.handleTimerSet.bind(this)}
+            onFinished={this.handleTimerFinished.bind(this)}
+            minutesLeft={this.state.minuteDuration}
+            secondsLeft={this.state.secondDuration}
+          />
+          <div className="teamMemberListingContainer">
+            {
+              this.state.teamMembers.map(function(teamMember) {
+                return <TeamMemberListing
+                          key={teamMember.name}
+                          teamMember={teamMember}
+                          teamMemberChanged={_this.teamMemberChecked.bind(_this)}/>
+              })
+            }
+          </div>
         </div>
-      </div >
+      </Provider>
     );
   }
 }
+
+// store.subscribe(() => {
+//  console.log(store.getState());
+// });
+
+// import {finishTurn} from '../../redux/actions.js'
+//store.dispatch(finishTurn());
 
 export default ScrumStandUpTimer;

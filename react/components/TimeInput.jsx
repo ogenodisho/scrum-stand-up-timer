@@ -1,6 +1,7 @@
 var React = require('react');
 
 class TimeInput extends React.Component {
+
   constructor(props) {
     super(props)
     this.focusSeconds = this.focusSeconds.bind(this);
@@ -8,6 +9,7 @@ class TimeInput extends React.Component {
     this.focusMinutes = this.focusMinutes.bind(this);
     this.blurMinutes = this.blurMinutes.bind(this);
   }
+
   handleKeyPress(e) {
     e.preventDefault();
     e.stopPropagation();

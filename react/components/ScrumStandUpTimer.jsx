@@ -5,149 +5,84 @@ import TeamMemberListing from './TeamMemberListing.jsx';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux';
 import standupTimer from '../../redux/reducers.js';
+var Immutable = require('immutable');
 
-const store = createStore(standupTimer);
-
-// -> Fisher–Yates shuffle algorithm
-function shuffleArray(array) {
-  var m = array.length,
-  t,
-  i;
-
-  // While there remain elements to shuffle
-  while (m) {
-    // Pick a remaining element…
-    i = Math.floor(Math.random() * m--);
-
-    // And swap it with the current element.
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
-
-  return array;
+function shuffleAndSetIndexes(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+    for (var i = 0; i < a.length; i++) {
+      a[i].index = i;
+    }
 }
 
+var teamMembers = [{
+    name: "Aaron",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/03.png",
+    awaitingTurn: true,
+    index: 0
+}, {
+    name: "Daniel",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/16.png",
+    awaitingTurn: true,
+    index: 1
+}, {
+    name: "Ian",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/41.png",
+    awaitingTurn: true,
+    index: 2
+}, {
+    name: "Jason",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/14.png",
+    awaitingTurn: true,
+    index: 3
+}, {
+    name: "Ogen",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/36.png",
+    awaitingTurn: true,
+    index: 4
+}, {
+    name: "Robert",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/22.png",
+    awaitingTurn: true,
+    index: 5
+}, {
+    name: "Tegan",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/29.png",
+    awaitingTurn: true,
+    index: 6
+}, {
+    name: "Tom",
+    imageUrl: "http://www.tfo.su/uploads5/futurama/49.png",
+    awaitingTurn: true,
+    index: 7
+}]
+shuffleAndSetIndexes(teamMembers);
+const initialState = Immutable.fromJS({
+    durationSeconds: 120,
+    secondsLeft: 120,
+    inProgress: false,
+    paused: false,
+    teamMembers: teamMembers,
+    currentTeamMember: teamMembers[0]
+})
+
+const store = createStore(standupTimer, initialState);
+
 class ScrumStandUpTimer extends React.Component {
-  componentWillMount() {
-    shuffleArray(this.state.teamMembers);
-    for (var i = 0; i < this.state.teamMembers.length; i++) {
-      this.state.teamMembers[i].index = i;
-    }
-  }
-
-  constructor() {
-    super();
-    this.state = {
-      currentTeamMemberIndex: 0,
-      teamMembers: [
-        {
-          name: "Aaron",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/03.png",
-          awaitingTurn: true
-        }, {
-          name: "Daniel",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/16.png",
-          awaitingTurn: true
-        }, {
-          name: "Ian",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/41.png",
-          awaitingTurn: true
-        }, {
-          name: "Jason",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/14.png",
-          awaitingTurn: true
-        }, {
-          name: "Ogen",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/36.png",
-          awaitingTurn: true
-        }, {
-          name: "Robert",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/22.png",
-          awaitingTurn: true
-        }, {
-          name: "Tegan",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/29.png",
-          awaitingTurn: true
-        }, {
-          name: "Tom",
-          imageUrl: "http://www.tfo.su/uploads5/futurama/49.png",
-          awaitingTurn: true
-        }
-      ],
-      minuteDuration: "02",
-      secondDuration: "00"
-    };
-  }
-
-  handleTimerSet(minuteDuration, secondDuration) {
-    this.setState({minuteDuration: minuteDuration, secondDuration: secondDuration});
-  }
-
-  handleTimerFinished(teamMemberIndex) {
-    var stateCopy = Object.assign({}, this.state);
-    stateCopy.teamMembers[teamMemberIndex].awaitingTurn = false;
-    for (var i = teamMemberIndex + 1; i < stateCopy.teamMembers.length; i++) {
-      if (stateCopy.teamMembers[i].awaitingTurn) {
-        stateCopy.currentTeamMemberIndex = stateCopy.teamMembers[i].index;
-        break;
-      }
-    }
-    this.setState(stateCopy);
-  }
-
-  teamMemberChecked(newTeamMember, status) {
-    var stateCopy = Object.assign({}, this.state);
-    for (var i = 0; i < this.state.teamMembers.length; i++) {
-      if (newTeamMember.name === this.state.teamMembers[i].name) {
-        stateCopy.teamMembers[i].awaitingTurn = newTeamMember.awaitingTurn;
-        for (var j = 0; j < stateCopy.teamMembers.length; j++) {
-          if (stateCopy.teamMembers[j].awaitingTurn) {
-              stateCopy.currentTeamMemberIndex = j;
-              break;
-          }
-        }
-        break;
-      }
-    }
-
-    this.setState(stateCopy);
-  }
 
   render() {
-    const _this = this;
     return (
       <Provider store={store}>
         <div>
-          <Avatar teamMembers={this.state.teamMembers} currentTeamMemberIndex={this.state.currentTeamMemberIndex}/>
-          <Timer
-            teamMembers={this.state.teamMembers}
-            onSet={this.handleTimerSet.bind(this)}
-            onFinished={this.handleTimerFinished.bind(this)}
-            minutesLeft={this.state.minuteDuration}
-            secondsLeft={this.state.secondDuration}
-          />
-          <div className="teamMemberListingContainer">
-            {
-              this.state.teamMembers.map(function(teamMember) {
-                return <TeamMemberListing
-                          key={teamMember.name}
-                          teamMember={teamMember}
-                          teamMemberChanged={_this.teamMemberChecked.bind(_this)}/>
-              })
-            }
-          </div>
+          <Avatar />
+          <Timer />
+          <TeamMemberListing />
         </div>
       </Provider>
     );
   }
 }
-
-// store.subscribe(() => {
-//  console.log(store.getState());
-// });
-
-// import {finishTurn} from '../../redux/actions.js'
-//store.dispatch(finishTurn());
 
 export default ScrumStandUpTimer;

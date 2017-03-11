@@ -5,10 +5,10 @@ export const SKIP = 'SKIP'
 export const FINISH_TURN = 'FINISH_TURN'
 export const CHECK_TEAM_MEMBER = 'CHECK_TEAM_MEMBER'
 export const UNCHECK_TEAM_MEMBER = 'UNCHECK_TEAM_MEMBER'
-export const ADD_MINUTES = 'ADD_MINUTES'
-export const MINUS_MINUTES = 'MINUS_MINUTES'
-export const ADD_SECONDS = 'ADD_SECONDS'
-export const MINUS_SECONDS = 'MINUS_SECONDS'
+export const MODIFY_MINUTES_LEFT = 'MODIFY_MINUTES_LEFT'
+export const MODIFY_SECONDS_LEFT = 'MODIFY_SECONDS_LEFT'
+export const MODIFY_MINUTE_DURATION = 'MODIFY_MINUTE_DURATION'
+export const MODIFY_SECOND_DURATION = 'MODIFY_SECOND_DURATION'
 export const TICK = 'TICK'
 
 export function startTimer() {
@@ -62,31 +62,35 @@ export function uncheckTeamMember(index) {
     }
 }
 
-export function addMinutes() {
-    console.log("Received Action: ADD_MINUTES");
+export function modifyMinutesLeft(minutes) {
+    console.log("Received Action: MODIFY_MINUTES_LEFT");
     return {
-        type: ADD_MINUTES
+        type: MODIFY_MINUTES_LEFT,
+        minutes: parseInt(minutes)
     }
 }
 
-export function minusMinutes() {
-    console.log("Received Action: MINUS_MINUTES");
+export function modifySecondsLeft(seconds) {
+    console.log("Received Action: MODIFY_SECONDS_LEFT");
     return {
-        type: MINUS_MINUTES
+        type: MODIFY_SECONDS_LEFT,
+        seconds: parseInt(seconds)
     }
 }
 
-export function addSeconds() {
-    console.log("Received Action: ADD_SECONDS");
+export function modifyMinuteDuration(minutes) {
+    console.log("Received Action: MODIFY_MINUTE_DURATION");
     return {
-        type: ADD_SECONDS
+        type: MODIFY_MINUTE_DURATION,
+        minutes: parseInt(minutes)
     }
 }
 
-export function minusSeconds() {
-    console.log("Received Action: MINUS_SECONDS");
+export function modifySecondDuration(seconds) {
+    console.log("Received Action: MODIFY_SECOND_DURATION");
     return {
-        type: MINUS_SECONDS
+        type: MODIFY_SECOND_DURATION,
+        seconds: parseInt(seconds)
     }
 }
 

@@ -1,5 +1,13 @@
 var React = require('react');
 
+function padZeros(value) {
+  if ((value + "").length === 1) {
+    return "0" + value;
+  } else {
+    return value + "";
+  }
+}
+
 class TimeInput extends React.Component {
 
   constructor(props) {
@@ -32,7 +40,7 @@ class TimeInput extends React.Component {
     return (
       <div className="timeInput">
         <input className="minutes" type="number" min="0" max="59"
-          value={this.props.minutesLeft}
+          value={padZeros(this.props.minutes)}
           onChange={this.props.onChange}
           onKeyPress={this.handleKeyPress}
           onMouseEnter={this.focusMinutes}
@@ -45,7 +53,7 @@ class TimeInput extends React.Component {
         />
         <span>:</span>
         <input className="seconds" type="number" min="0" max="59"
-          value={this.props.secondsLeft}
+          value={padZeros(this.props.seconds)}
           onChange={this.props.onChange}
           onKeyPress={this.handleKeyPress}
           onMouseEnter={this.focusSeconds}

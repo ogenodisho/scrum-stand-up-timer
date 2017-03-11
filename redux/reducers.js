@@ -6,10 +6,10 @@ import {
     FINISH_TURN,
     CHECK_TEAM_MEMBER,
     UNCHECK_TEAM_MEMBER,
-    ADD_MINUTES,
-    MINUS_MINUTES,
-    ADD_SECONDS,
-    MINUS_SECONDS,
+    MODIFY_MINUTES_LEFT,
+    MODIFY_SECONDS_LEFT,
+    MODIFY_MINUTE_DURATION,
+    MODIFY_SECOND_DURATION,
     TICK
 } from './actions'
 
@@ -31,16 +31,20 @@ function standupTimer(state, action) {
             return state.setIn(["teamMembers", action.index, "awaitingTurn"], true);
         case UNCHECK_TEAM_MEMBER:
             return state.setIn(["teamMembers", action.index, "awaitingTurn"], false);
-        case ADD_MINUTES:
-            return state.set("durationSeconds", state.get("durationSeconds") + 60);
-        case MINUS_MINUTES:
-            return state.set("durationSeconds", state.get("durationSeconds") - 60);
-        case ADD_SECONDS:
-            return state.set("durationSeconds", state.get("durationSeconds") + 1);
-        case MINUS_SECONDS:
-            return state.set("durationSeconds", state.get("durationSeconds") - 1);
+        case MODIFY_MINUTE_DURATION:
+            var currSeconds = state.get("durationSeconds") % 60;
+            return state.set("durationSeconds", currSeconds + action.minutes * 60).set("secondsLeft", currSeconds + action.minutes * 60);
+        case MODIFY_SECOND_DURATION:
+            var currMinutesInSeconds = Math.floor(state.get("durationSeconds") / 60) * 60;
+            return state.set("durationSeconds", currMinutesInSeconds + action.seconds).set("secondsLeft", currMinutesInSeconds + action.seconds);
+        case MODIFY_MINUTES_LEFT:
+            var currSeconds = state.get("secondsLeft") % 60;
+            return state.set("secondsLeft", currSeconds + action.minutes * 60);
+        case MODIFY_SECONDS_LEFT:
+            var currMinutesInSeconds = Math.floor(state.get("secondsLeft") / 60) * 60;
+            return state.set("secondsLeft", currMinutesInSeconds + action.seconds);
         case TICK:
-            return state.set("secondsLeft", state.get("secondsLeft") - 1);
+            return state.update("secondsLeft", secondsLeft => secondsLeft - 1);
         default:
             return state;
     }

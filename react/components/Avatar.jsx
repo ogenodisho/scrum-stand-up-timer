@@ -3,6 +3,7 @@ var React = require('react');
 class Avatar extends React.Component {
   constructor(props) {
     super(props)
+    // TODO only show this when this.props.inProgress
     this.state={
       name: "Scrum Standup Timer",
       imageUrl: "https://lh3.googleusercontent.com/-v2Z4lxXe6LY/AAAAAAAAAAI/AAAAAAAAAAA/uVDfAq0u28s/photo.jpg"

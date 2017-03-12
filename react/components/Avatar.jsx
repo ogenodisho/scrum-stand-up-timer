@@ -1,33 +1,30 @@
 var React = require('react');
+import {connect} from 'react-redux'
 
 class Avatar extends React.Component {
-  constructor(props) {
-    super(props)
-    // TODO only show this when this.props.inProgress
-    this.state={
-      name: "Scrum Standup Timer",
-      imageUrl: "https://lh3.googleusercontent.com/-v2Z4lxXe6LY/AAAAAAAAAAI/AAAAAAAAAAA/uVDfAq0u28s/photo.jpg"
-    }
-  }
-
-  componentWillReceiveProps() {
-    for (var i = 0; i < this.props.teamMembers.length; i++) {
-     if (this.props.teamMembers[i].awaitingTurn) {
-       this.setState({name: this.props.teamMembers[i].name, imageUrl: this.props.teamMembers[i].imageUrl})
-       return;
-     }
-    }
-    this.setState({name: "Scrum Standup Timer", imageUrl: "https://lh3.googleusercontent.com/-v2Z4lxXe6LY/AAAAAAAAAAI/AAAAAAAAAAA/uVDfAq0u28s/photo.jpg"})
-  }
 
   render() {
+    var name = "Scrum Standup Timer";
+    var imageUrl = "https://lh3.googleusercontent.com/-v2Z4lxXe6LY/AAAAAAAAAAI/AAAAAAAAAAA/uVDfAq0u28s/photo.jpg";
+    if (this.props.inProgress) {
+      name = this.props.teamMembers[this.props.currentTeamMemberIndex].name;
+      imageUrl = this.props.teamMembers[this.props.currentTeamMemberIndex].imageUrl;
+    }
     return (
       <div className="avatar">
-        <p>{this.state.name}</p>
-        <img src={this.state.imageUrl}/>
+        <p>{name}</p>
+        <img src={imageUrl}/>
       </div>
     );
   }
 }
 
-export default Avatar;
+function mapStateToProps(state) {
+  return {
+            inProgress: state.get("inProgress"),
+            teamMembers: state.get("teamMembers").toJS(),
+            currentTeamMemberIndex: state.get("currentTeamMemberIndex")
+        }
+}
+
+export default connect(mapStateToProps)(Avatar);

@@ -60,12 +60,14 @@ var teamMembers = [{
 }]
 shuffleAndSetIndexes(teamMembers);
 const initialState = Immutable.fromJS({
+    timerId: -1,
     durationSeconds: 120,
     secondsLeft: 120,
     inProgress: false,
     paused: false,
     teamMembers: teamMembers,
-    currentTeamMember: teamMembers[0]
+    currentTeamMemberIndex: 0,
+    allUnchecked: false
 })
 
 const store = createStore(standupTimer, initialState);

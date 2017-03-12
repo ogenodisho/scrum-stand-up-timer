@@ -10,11 +10,13 @@ export const MODIFY_SECONDS_LEFT = 'MODIFY_SECONDS_LEFT'
 export const MODIFY_MINUTE_DURATION = 'MODIFY_MINUTE_DURATION'
 export const MODIFY_SECOND_DURATION = 'MODIFY_SECOND_DURATION'
 export const TICK = 'TICK'
+export const RANDOMIZE = 'RANDOMIZE'
 
-export function startTimer() {
+export function startTimer(tick) {
     console.log("Received Action: START_TIMER");
     return {
-        type: START_TIMER
+        type: START_TIMER,
+        tick: tick
     }
 }
 
@@ -98,5 +100,12 @@ export function tick() {
     console.log("Received Action: TICK");
     return {
         type: TICK
+    }
+}
+
+export function randomize() {
+    console.log("Received Action: RANDOMIZE");
+    return {
+        type: RANDOMIZE
     }
 }

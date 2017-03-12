@@ -1,5 +1,5 @@
 var React = require('react');
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class Avatar extends React.Component {
 

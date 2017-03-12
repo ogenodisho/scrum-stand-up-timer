@@ -1,17 +1,9 @@
-var React = require('react');
+const React = require('react');
 import TimeInput from './TimeInput.jsx';
-import {connect} from 'react-redux'
-import {startTimer,
-  pauseTimer,
-  resumeTimer,
-  skip,
-  tick,
-  finishTurn,
-  modifyMinuteDuration,
-  modifySecondDuration,
-  modifyMinutesLeft,
-  modifySecondsLeft
-} from '../../redux/actions.js'
+import { connect } from 'react-redux'
+import {  startTimer, pauseTimer, resumeTimer, skip, tick,
+          finishTurn, modifyMinuteDuration, modifySecondDuration,
+          modifyMinutesLeft, modifySecondsLeft } from '../../redux/actions.js'
 
 class Timer extends React.Component {
 
@@ -19,6 +11,7 @@ class Timer extends React.Component {
     if (this.props.paused) {
       return;
     }
+
     if (this.props.minutesLeft === 0 && this.props.secondsLeft === 0) {
       this.props.dispatch(finishTurn());
     } else {

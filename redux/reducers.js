@@ -1,25 +1,13 @@
-import {
-    START_TIMER,
-    PAUSE_TIMER,
-    RESUME_TIMER,
-    SKIP,
-    FINISH_TURN,
-    CHECK_TEAM_MEMBER,
-    UNCHECK_TEAM_MEMBER,
-    MODIFY_MINUTES_LEFT,
-    MODIFY_SECONDS_LEFT,
-    MODIFY_MINUTE_DURATION,
-    MODIFY_SECOND_DURATION,
-    TICK,
-    RANDOMIZE
-} from './actions'
-var Immutable = require('immutable');
+import {  START_TIMER, PAUSE_TIMER, RESUME_TIMER, SKIP, FINISH_TURN,
+          CHECK_TEAM_MEMBER, UNCHECK_TEAM_MEMBER, MODIFY_MINUTES_LEFT,
+          MODIFY_SECONDS_LEFT, MODIFY_MINUTE_DURATION, MODIFY_SECOND_DURATION,
+          TICK, RANDOMIZE } from './actions'
+const Immutable = require('immutable');
 
 function standupTimer(state, action) {
     switch (action.type) {
         case START_TIMER:
             var stateToReturn = state.set("timerId", setInterval(action.tick, 1000)).set("inProgress", true);
-
             // set current team member index
             var teamMembers = state.get("teamMembers").toJS();
             for (var i = 0; i < teamMembers.length; i++) {
@@ -35,7 +23,8 @@ function standupTimer(state, action) {
         case FINISH_TURN:
             var currentTeamMemberIndex = state.get("currentTeamMemberIndex");
             var teamMembers = state.get("teamMembers").toJS();
-            var currentTeamMemberFinishedState = state.setIn(["teamMembers", currentTeamMemberIndex, "awaitingTurn"], false).set("secondsLeft", state.get("durationSeconds"));
+            var currentTeamMemberFinishedState = state.setIn(["teamMembers", currentTeamMemberIndex, "awaitingTurn"], false)
+                                                      .set("secondsLeft", state.get("durationSeconds"));
 
             // for loop that wraps around to find next team member
             for (var i = currentTeamMemberIndex + 1; i < teamMembers.length + currentTeamMemberIndex; i++) {
@@ -56,6 +45,7 @@ function standupTimer(state, action) {
         case UNCHECK_TEAM_MEMBER:
             var stateToReturn = state.set("allUnchecked", true);
             var teamMembers = state.get("teamMembers").toJS();
+
             for (var i = 0; i < teamMembers.length; i++) {
               if (i === action.index) {
                 continue;
@@ -65,6 +55,7 @@ function standupTimer(state, action) {
                 break;
               }
             }
+
             return stateToReturn.setIn(["teamMembers", action.index, "awaitingTurn"], false);
         case MODIFY_MINUTE_DURATION:
             var currSeconds = state.get("durationSeconds") % 60;
@@ -82,9 +73,11 @@ function standupTimer(state, action) {
             return state.update("secondsLeft", secondsLeft => secondsLeft - 1);
         case RANDOMIZE:
             var randomizedTeamMembers = state.get("teamMembers").sortBy(teamMember => Math.random()).toJS();
+
             for (var i = 0; i < randomizedTeamMembers.length; i++) {
               randomizedTeamMembers[i].index = i;
             }
+
             return state.set("teamMembers", Immutable.fromJS(randomizedTeamMembers));
         default:
             return state;

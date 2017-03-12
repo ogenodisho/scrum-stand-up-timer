@@ -1,4 +1,4 @@
-var React = require('react');
+const React = require('react');
 
 function padZeros(value) {
   if ((value + "").length === 1) {

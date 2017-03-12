@@ -1,9 +1,9 @@
-var React = require('react');
+const React = require('react');
 import Avatar from './Avatar.jsx';
 import Timer from './Timer.jsx';
 import TeamMemberListing from './TeamMemberListing.jsx';
-import {Provider} from 'react-redux'
-import {createStore} from 'redux';
+import { Provider } from 'react-redux'
+import { createStore } from 'redux';
 import standupTimer from '../../redux/reducers.js';
 var Immutable = require('immutable');
 

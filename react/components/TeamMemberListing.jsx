@@ -1,13 +1,15 @@
-var React = require('react');
-import {connect} from 'react-redux'
-import {checkTeamMember, uncheckTeamMember, randomize} from '../../redux/actions.js'
+const React = require('react');
+import { connect } from 'react-redux'
+import { checkTeamMember, uncheckTeamMember, randomize } from '../../redux/actions.js'
 
 class TeamMemberListing extends React.Component {
 
   onTeamMemberCheckboxChanged(teamMemberObject, checkbox) {
-    teamMemberObject.teamMember.awaitingTurn ?
-      this.props.dispatch(uncheckTeamMember(teamMemberObject.teamMember.index)) :
+    if (teamMemberObject.teamMember.awaitingTurn) {
+      this.props.dispatch(uncheckTeamMember(teamMemberObject.teamMember.index));
+    } else {
       this.props.dispatch(checkTeamMember(teamMemberObject.teamMember.index));
+    }
   };
 
   render() {
@@ -25,7 +27,7 @@ class TeamMemberListing extends React.Component {
                   </label>
           }, this)
         }
-      <br/><br/>
+      <br/>
       <input type="button" value="Randomize" disabled={this.props.inProgress}
         onClick={ () => this.props.dispatch(randomize())} />
       </div>

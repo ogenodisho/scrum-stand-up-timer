@@ -43,20 +43,15 @@ var teamMembers = [{
     awaitingTurn: true,
     index: 4
 }, {
-    name: "Robert",
-    imageUrl: "http://www.tfo.su/uploads5/futurama/22.png",
-    awaitingTurn: true,
-    index: 5
-}, {
     name: "Tegan",
     imageUrl: "http://www.tfo.su/uploads5/futurama/29.png",
     awaitingTurn: true,
-    index: 6
+    index: 5
 }, {
     name: "Tom",
     imageUrl: "http://www.tfo.su/uploads5/futurama/49.png",
     awaitingTurn: true,
-    index: 7
+    index: 6
 }]
 shuffleAndSetIndexes(teamMembers);
 const initialState = Immutable.fromJS({

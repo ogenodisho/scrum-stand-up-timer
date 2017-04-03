@@ -11,12 +11,32 @@ import {
     MODIFY_MINUTE_DURATION,
     MODIFY_SECOND_DURATION,
     TICK,
-    RANDOMIZE
+    RANDOMIZE,
+    HYDRATE
 } from './actions'
 const Immutable = require('immutable');
 
+function shuffleAndSetIndexesAndAwaitingTurn(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+    for (var i = 0; i < a.length; i++) {
+        a[i].index = i;
+        a[i].awaitingTurn = true;
+    }
+}
+
 function standupTimer(state, action) {
     switch (action.type) {
+        case HYDRATE:
+            var teamMembers = action.data.teamMembers
+            var durationSeconds = action.data.durationSeconds
+            var teamAvatarUrl = action.data.teamAvatarUrl
+            shuffleAndSetIndexesAndAwaitingTurn(teamMembers)
+            var stateToReturn = state.set("teamMembers", Immutable.fromJS(teamMembers))
+            stateToReturn = stateToReturn.set("teamAvatarUrl", Immutable.fromJS(teamAvatarUrl))
+            return stateToReturn.set("durationSeconds", Immutable.fromJS(durationSeconds))
         case START_TIMER:
             var stateToReturn = state.set("timerId", setInterval(action.tick, 1000)).set("inProgress", true);
             // set current team member index
@@ -26,6 +46,7 @@ function standupTimer(state, action) {
                     return stateToReturn.set("currentTeamMemberIndex", i);
                 }
             }
+            break;
         case PAUSE_TIMER:
             return state.set("paused", true);
         case RESUME_TIMER:

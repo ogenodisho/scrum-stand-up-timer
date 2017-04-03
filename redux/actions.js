@@ -11,6 +11,7 @@ export const MODIFY_MINUTE_DURATION = "MODIFY_MINUTE_DURATION";
 export const MODIFY_SECOND_DURATION = "MODIFY_SECOND_DURATION";
 export const TICK = "TICK";
 export const RANDOMIZE = "RANDOMIZE";
+export const HYDRATE = "HYDRATE";
 
 export function startTimer(tick) {
     return {
@@ -94,5 +95,12 @@ export function tick() {
 export function randomize() {
     return {
         type: RANDOMIZE
+    }
+}
+
+export function hydrate(data) {
+    return {
+        type: HYDRATE,
+        data: data
     }
 }

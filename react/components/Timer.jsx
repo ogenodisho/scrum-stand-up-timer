@@ -4,12 +4,22 @@ import { connect } from 'react-redux'
 import {  startTimer, pauseTimer, resumeTimer, skip, tick,
           finishTurn, modifyMinuteDuration, modifySecondDuration,
           modifyMinutesLeft, modifySecondsLeft } from '../../redux/actions.js'
+          import { audioNotification } from '../../index/CitadelIntegration.js'
 
 class Timer extends React.Component {
 
   tick() {
     if (this.props.paused) {
       return;
+    }
+
+    if (this.props.minutesLeft === 0) {
+      if (this.props.secondsLeft === 31) {
+        audioNotification("thirty seconds remaining")
+      }
+      if (this.props.secondsLeft <= 11) {
+        audioNotification(this.props.secondsLeft - 1)
+      }
     }
 
     if (this.props.minutesLeft === 0 && this.props.secondsLeft === 0) {

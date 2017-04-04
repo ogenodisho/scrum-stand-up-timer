@@ -12,9 +12,13 @@ import {
     MODIFY_SECOND_DURATION,
     TICK,
     RANDOMIZE,
-    HYDRATE
+    HYDRATE,
+    SWITCH_USER_MODE
 } from './actions'
 const Immutable = require('immutable');
+import {
+    audioNotification
+} from '../index/CitadelIntegration.js'
 
 function shuffleAndSetIndexesAndAwaitingTurn(a) {
     for (let i = a.length; i; i--) {
@@ -37,12 +41,15 @@ function standupTimer(state, action) {
             var stateToReturn = state.set("teamMembers", Immutable.fromJS(teamMembers))
             stateToReturn = stateToReturn.set("teamAvatarUrl", Immutable.fromJS(teamAvatarUrl))
             return stateToReturn.set("durationSeconds", Immutable.fromJS(durationSeconds))
+        case SWITCH_USER_MODE:
+            return state.set("userMode", !state.get("userMode"));
         case START_TIMER:
             var stateToReturn = state.set("timerId", setInterval(action.tick, 1000)).set("inProgress", true);
             // set current team member index
             var teamMembers = state.get("teamMembers").toJS();
             for (var i = 0; i < teamMembers.length; i++) {
                 if (teamMembers[i].awaitingTurn) {
+                    audioNotification(teamMembers[i].name + "'s turn", "cmu-bdl-hsmm")
                     return stateToReturn.set("currentTeamMemberIndex", i);
                 }
             }
@@ -62,6 +69,7 @@ function standupTimer(state, action) {
             for (var i = currentTeamMemberIndex + 1; i < teamMembers.length + currentTeamMemberIndex; i++) {
                 var currTeamMember = teamMembers[i % teamMembers.length];
                 if (currTeamMember.awaitingTurn) {
+                    audioNotification(currTeamMember.name + "'s turn", "cmu-bdl-hsmm") //'cmu-rms-hsmm')
                     return currentTeamMemberFinishedState.set("currentTeamMemberIndex", currTeamMember.index);
                 }
             }
@@ -71,7 +79,7 @@ function standupTimer(state, action) {
             }
 
             clearInterval(state.get("timerId"));
-            currentTeamMemberFinishedState = currentTeamMemberFinishedState.set("inProgress", false);
+            currentTeamMemberFinishedState = currentTeamMemberFinishedState.set("inProgress", false).set("userMode", false);
             return randomizeTeamMembers(currentTeamMemberFinishedState)
         case CHECK_TEAM_MEMBER:
             return state.setIn(["teamMembers", action.index, "awaitingTurn"], true).set("allUnchecked", false);

@@ -167,8 +167,9 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 const NOTIFICATION_ID = getParameterByName('id');
+const HOST_NAME = self.location.hostname;
 const PROFILE_ID = {}
-const NOTIFICATION_SERVICE_URI = `http://localhost:6630/notification-service/notifications/v1/${NOTIFICATION_ID}`;
+const NOTIFICATION_SERVICE_URI = `http://${HOST_NAME}:6630/notification-service/notifications/v1/${NOTIFICATION_ID}`;
 const PLANET_EXPRESS_BOOTSTRAP_DATA = {
     teamAvatarUrl: "https://lh3.googleusercontent.com/-v2Z4lxXe6LY/AAAAAAAAAAI/AAAAAAAAAAA/uVDfAq0u28s/photo.jpg",
     teamMembers: [{
@@ -224,24 +225,26 @@ export const retrieveProfileNotificationData = function(onComplete) {
         });
 };
 
-const BROADCAST_MESSAGE_SERVICE_URI = "http://localhost:6600/broadcast-request/v1/message"
+const BROADCAST_MESSAGE_SERVICE_URI = `http://${HOST_NAME}:6600/broadcast-request/v1/message`
 const BROADCAST_MESSAGE_SERVICE_INIT = {
     method: 'POST',
     headers: new Headers({
         'Accept': 'application/vnd.api+json',
         'Content-Type': 'application/vnd.api+json'
     }),
-    mode: 'cors',
-    notificationId: NOTIFICATION_ID
+    mode: 'cors'
 };
 export const postNotificationMessage = function(notificationData) {
     if ("value" in PROFILE_ID === false) {
         console.log("Profile id not set yet!")
     }
     var payload = BROADCAST_MESSAGE_SERVICE_INIT;
-    payload.data = notificationData;
-    payload.profileId = PROFILE_ID.value;
-    console.log(payload)
+    const data = {
+        notificationId: NOTIFICATION_ID,
+        profileId: PROFILE_ID.value,
+        data: notificationData
+    }
+    payload.body = JSON.stringify(data);
     fetch(BROADCAST_MESSAGE_SERVICE_URI, payload).then(function(response) {
             return response.json();
         })
@@ -280,12 +283,12 @@ export const startNotificationWebSocketListener = function(onNotification) {
         });
 }
 
-export const audioNotification = function(msg) {
-    const audioService = 'http://localhost:6620/audio-service/v1',
+export const audioNotification = function(msg, voice) {
+    const audioService = `http://${HOST_NAME}:6620/audio-service/v1`,
         data = {
             text: msg,
             format: 'wav',
-            voice: 'cmu-rms-hsmm'
+            voice: voice
         },
         init = {
             method: 'PUT',

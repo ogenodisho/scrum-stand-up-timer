@@ -12,6 +12,7 @@ export const MODIFY_SECOND_DURATION = "MODIFY_SECOND_DURATION";
 export const TICK = "TICK";
 export const RANDOMIZE = "RANDOMIZE";
 export const HYDRATE = "HYDRATE";
+export const SWITCH_USER_MODE = "SWITCH_USER_MODE";
 
 export function startTimer(tick) {
     return {
@@ -102,5 +103,11 @@ export function hydrate(data) {
     return {
         type: HYDRATE,
         data: data
+    }
+}
+
+export function switchUserMode() {
+    return {
+        type: SWITCH_USER_MODE
     }
 }

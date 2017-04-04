@@ -1,36 +1,41 @@
 const React = require('react');
-import TimeInput from './TimeInput.jsx';
 import { connect } from 'react-redux'
-import {  startTimer, pauseTimer, resumeTimer, skip, tick,
-          finishTurn, modifyMinuteDuration, modifySecondDuration,
-          modifyMinutesLeft, modifySecondsLeft } from '../../redux/actions.js'
-          import { audioNotification } from '../../index/CitadelIntegration.js'
+import { modifyMinuteDuration, modifySecondDuration, modifyMinutesLeft, modifySecondsLeft } from '../../redux/actions.js'
+
+function padZeros(value) {
+  if ((value + "").length === 1) {
+    return "0" + value;
+  } else {
+    return value + "";
+  }
+}
 
 class Timer extends React.Component {
 
-  tick() {
-    if (this.props.paused) {
-      return;
-    }
-
-    if (this.props.minutesLeft === 0) {
-      if (this.props.secondsLeft === 31) {
-        audioNotification("thirty seconds remaining")
-      }
-      if (this.props.secondsLeft <= 11) {
-        audioNotification(this.props.secondsLeft - 1)
-      }
-    }
-
-    if (this.props.minutesLeft === 0 && this.props.secondsLeft === 0) {
-      this.props.dispatch(finishTurn());
-    } else {
-      this.props.dispatch(tick());
-    }
+  constructor(props) {
+    super(props)
+    this.focusSeconds = this.focusSeconds.bind(this);
+    this.blurSeconds = this.blurSeconds.bind(this);
+    this.focusMinutes = this.focusMinutes.bind(this);
+    this.blurMinutes = this.blurMinutes.bind(this);
   }
 
-  skip() {
-    this.props.dispatch(skip());
+  handleKeyPress(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  focusSeconds() {
+    this.secondsInput.focus();
+  }
+  blurSeconds() {
+    this.secondsInput.blur();
+  }
+  focusMinutes() {
+    this.minutesInput.focus();
+  }
+  blurMinutes() {
+    this.minutesInput.blur();
   }
 
   handleChange(event) {
@@ -54,29 +59,35 @@ class Timer extends React.Component {
   }
 
   render() {
+    var minutes = this.props.inProgress ? this.props.minutesLeft : this.props.durationMinutes
+    var seconds = this.props.inProgress ? this.props.secondsLeft : this.props.durationSeconds
     return (
-      <div>
-        <TimeInput
-          onChange={this.handleChange.bind(this)}
-          minutes={this.props.inProgress ? this.props.minutesLeft : this.props.durationMinutes}
-          seconds={this.props.inProgress ? this.props.secondsLeft : this.props.durationSeconds}
+      <div className="timeInput">
+        <input className="minutes" type="number" min="0" max="59"
+          value={padZeros(minutes)}
+          onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
+          onMouseEnter={this.focusMinutes}
+          onMouseLeave={this.blurMinutes}
+          ref={
+            (input) => {
+              this.minutesInput = input;
+            }
+          }
         />
-        <div className="timerButtonsContainer">
-          <input type="button" value={!this.props.inProgress ? "Start" : this.props.paused ? "Resume" : "Pause"}
-            onClick={ () => {
-                        if (!this.props.inProgress) {
-                          this.props.dispatch(startTimer(this.tick.bind(this)));
-                        } else {
-                          this.props.dispatch(this.props.paused ? resumeTimer() : pauseTimer());
-                        }
-                      }
-                    }
-            disabled={!this.props.inProgress && this.props.allUnchecked}
-          />
-          <input type="button" value="Skip" disabled={this.props.paused || !this.props.inProgress}
-            onClick={ () => this.props.dispatch(skip()) }
-          />
-        </div>
+        <span>:</span>
+        <input className="seconds" type="number" min="0" max="59"
+          value={padZeros(seconds)}
+          onChange={this.props.onChange}
+          onKeyPress={this.handleKeyPress}
+          onMouseEnter={this.focusSeconds}
+          onMouseLeave={this.blurSeconds}
+          ref={
+            (input) => {
+              this.secondsInput = input;
+            }
+          }
+        />
       </div>
     )
   }
@@ -89,8 +100,7 @@ function mapStateToProps(state) {
             durationMinutes: Math.floor(state.get("durationSeconds") / 60),
             durationSeconds: state.get("durationSeconds") % 60,
             minutesLeft: Math.floor(state.get("secondsLeft") / 60),
-            secondsLeft: state.get("secondsLeft") % 60,
-            allUnchecked: state.get("allUnchecked")
+            secondsLeft: state.get("secondsLeft") % 60
         }
 }
 

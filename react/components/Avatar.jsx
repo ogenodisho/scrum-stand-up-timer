@@ -4,17 +4,6 @@ import { audioNotification } from '../../index/CitadelIntegration.js'
 
 class Avatar extends React.Component {
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.teamMembers.length != 0) {
-      var currentName = this.props.teamMembers[this.props.currentTeamMemberIndex].name;
-      var nextName = nextProps.teamMembers[nextProps.currentTeamMemberIndex].name;
-      var started = !this.props.inProgress && nextProps.inProgress;
-      if ((currentName != nextName && nextProps.inProgress) || started) {
-        audioNotification(nextName + "'s turn")
-      }
-    }
-  }
-
   render() {
     var name = "Scrum Standup Timer";
     var imageUrl = this.props.teamAvatarUrl;

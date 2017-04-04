@@ -47,6 +47,14 @@ input:focus {
     font-size: 8em;
 }
 
+.finishButton {
+    height: 400px;
+    width: 400px;
+    border: none;
+    font-size: 10em;
+    cursor: pointer;
+}
+
 .avatar {
     font-size: 6em;
 }

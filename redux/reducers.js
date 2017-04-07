@@ -17,7 +17,8 @@ import {
 } from './actions'
 const Immutable = require('immutable');
 import {
-    audioNotification
+    audioNotification,
+    postNotificationClose
 } from '../index/CitadelIntegration.js'
 
 function shuffleAndSetIndexesAndAwaitingTurn(a) {
@@ -73,6 +74,9 @@ function standupTimer(state, action) {
                     return currentTeamMemberFinishedState.set("currentTeamMemberIndex", currTeamMember.index);
                 }
             }
+
+            // TODO stuff after this doesnt matter
+            postNotificationClose();
 
             for (var i = 0; i < teamMembers.length; i++) {
                 currentTeamMemberFinishedState = currentTeamMemberFinishedState.setIn(["teamMembers", i, "awaitingTurn"], true);

@@ -256,6 +256,36 @@ export const postNotificationMessage = function(notificationData) {
         });
 }
 
+const BROADCAST_CLOSE_SERVICE_URI = `http://${HOST_NAME}:6600/broadcast-request/v1/close`
+const BROADCAST_CLOSE_SERVICE_INIT = { //TODO this can be BROADCAST_SERVICE_INIT because they're all the same
+    method: 'POST',
+    headers: new Headers({
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json'
+    }),
+    mode: 'cors'
+};
+export const postNotificationClose = function() {
+    if ("value" in PROFILE_ID === false) {
+        console.log("Profile id not set yet!")
+    }
+    var payload = BROADCAST_CLOSE_SERVICE_INIT;
+    const data = {
+        notificationId: NOTIFICATION_ID,
+        profileId: PROFILE_ID.value
+    }
+    payload.body = JSON.stringify(data);
+    fetch(BROADCAST_CLOSE_SERVICE_URI, payload).then(function(response) {
+            return response.json();
+        })
+        .then(function(result) {
+            alert(result);
+        })
+        .catch(function(error) {
+            console.log('Request failed', error);
+        });
+}
+
 export const startNotificationWebSocketListener = function(onNotification) {
     fetch(NOTIFICATION_SERVICE_URI, NOTIFICATION_SERVICE_INIT)
         .then(function(response) {
